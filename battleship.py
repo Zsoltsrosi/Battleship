@@ -38,7 +38,7 @@ def get_move(board1, board2, player):
     """Returns the coordinates of a valid move for player on board."""
     row, col = 0, 0
     while True:
-        move = input("Make your move!")
+        move = input("%s make your move!" % player)
         wrong_input = "Input form was incorrect, please try again"
         location = list(move)
         if move == 'quit':
@@ -91,8 +91,8 @@ def main_menu():
     board2 = init_board2()
     while True:
         player = choose_player(player_index)
-        row, col = get_move(board1, board2, player)
         print_board(board1, board2, player)
+        row, col = get_move(board1, board2, player)
         mark(board1, board2, row, col, player)
         player_index += 1
 
