@@ -85,42 +85,44 @@ def place_ship(board, player):
 
 def check_next_to_ship(row, col, board, player, ship_size, ship_direction):
     okay_placement = False
-    if ship_size == 2 and ship_direction == 'v':          
-        if board[row + 1][col] == "0" and board[row + 1][col + 1] == "0" and board[row][col + 1] == "0":
-            if board[row + 2][col] == "0" and board[row + 1][col - 1] == "0" and board[row][col - 1] == "0":
-                if board[row - 1][col] == "0":
-                    print(okay_placement)
-                    return okay_placement is True
-                    
-                else:
-                    print(okay_placement)
-                    return okay_placement is False
-    elif ship_size == 2 and ship_direction == 'h':
-        if board[row][col + 1] == "0" and board[row][col + 2] == "0" and board[row][col - 1] == "0":
-            if board[row + 1][col] == "0" and board[row + 1][col + 1] == "0" and board[row - 1][col] == "0":
-                if board[row - 1][col + 1] == "0":
-                    print(okay_placement)
-                    return okay_placement is True
-                else:
-                    print(okay_placement)
-                    return okay_placement is False
-    elif ship_size == 3 and ship_direction == 'v':
-        if board[row + 1][col] == "0" and board[row + 1][col + 1] == "0" and board[row][col + 1] == "0":
-            if board[row + 2][col] == "0" and board[row + 1][col - 1] == "0" and board[row][col - 1] == "0":
-                if board[row - 1][col] == "0" and board[row + 3][col] == "0" and board[row + 2][col + 1] == "0" and board[row + 2][col - 1] == "0":
-                    print(okay_placement)
-                    return okay_placement is True
-                else:
-                    print(okay_placement)
-                    return okay_placement is False
-    elif ship_size == 3 and ship_direction == 'h':
-        if board[row][col + 1] == "0" and board[row][col + 2] == "0" and board[row][col - 1] == "0":
-            if board[row + 1][col] == "0" and board[row + 1][col + 1] == "0" and board[row - 1][col] == "0":
-                if board[row - 1][col + 1] == "0" and board[row][col + 3] == "0" and board[row + 1][col + 2] == "0" and board[row - 1][col + 2] == "0":
-                    return okay_placement is True
-                else:
-                    return okay_placement is False
-
+    try:
+        if ship_size == 2 and ship_direction == 'v':          
+            if board[row + 1][col] == "0" and board[row + 1][col + 1] == "0" and board[row][col + 1] == "0":
+                if board[row + 2][col] == "0" and board[row + 1][col - 1] == "0" and board[row][col - 1] == "0":
+                    if board[row - 1][col] == "0":
+                        print(okay_placement)
+                        return okay_placement is True
+                        
+                    else:
+                        print(okay_placement)
+                        return okay_placement is False
+        elif ship_size == 2 and ship_direction == 'h':
+            if board[row][col + 1] == "0" and board[row][col + 2] == "0" and board[row][col - 1] == "0":
+                if board[row + 1][col] == "0" and board[row + 1][col + 1] == "0" and board[row - 1][col] == "0":
+                    if board[row - 1][col + 1] == "0":
+                        print(okay_placement)
+                        return okay_placement is True
+                    else:
+                        print(okay_placement)
+                        return okay_placement is False
+        elif ship_size == 3 and ship_direction == 'v':
+            if board[row + 1][col] == "0" and board[row + 1][col + 1] == "0" and board[row][col + 1] == "0":
+                if board[row + 2][col] == "0" and board[row + 1][col - 1] == "0" and board[row][col - 1] == "0":
+                    if board[row - 1][col] == "0" and board[row + 3][col] == "0" and board[row + 2][col + 1] == "0" and board[row + 2][col - 1] == "0":
+                        print(okay_placement)
+                        return okay_placement is True
+                    else:
+                        print(okay_placement)
+                        return okay_placement is False
+        elif ship_size == 3 and ship_direction == 'h':
+            if board[row][col + 1] == "0" and board[row][col + 2] == "0" and board[row][col - 1] == "0":
+                if board[row + 1][col] == "0" and board[row + 1][col + 1] == "0" and board[row - 1][col] == "0":
+                    if board[row - 1][col + 1] == "0" and board[row][col + 3] == "0" and board[row + 1][col + 2] == "0" and board[row - 1][col + 2] == "0":
+                        return okay_placement is True
+                    else:
+                        return okay_placement is False
+    except IndexError:
+        print("Invalid Input")
 
 
 def get_move(board, player):
