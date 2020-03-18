@@ -85,7 +85,6 @@ def place_ship(board, player):
 
         print_ship_board(board, player)
 
-            
 
 def check_next_to_ship(row, col, board, player, ship_size, ship_direction):
     try:
@@ -123,24 +122,27 @@ def check_next_to_ship(row, col, board, player, ship_size, ship_direction):
 
 def print_game_board(board, player):
     print()
-    print("    1   2   3   4   5")
+    print("   1   2   3   4   5")
     print("")
     count = 0
-    for i in ["A", "B", "C", "D", "E"]:
-        print(i, end=" ")
-        for j in [0, 1, 2, 3, 4]:
-            if j < 6:
-                if board[count][j] == '0' or board[count][j] == 'X':
+    for letter in ["A", "B", "C", "D", "E"]:
+        print(letter, end=" ")
+        for index in [0, 1, 2, 3, 4]:
+            if index < 6:
+                if board[count][index] == '0' or board[count][index] == 'X':
                     print("  0", end=" ")
-                if board[count][j] == 'M':
-                    print("  M ")
-                if board[count][j] == 'H':
-                    print("  H ")
-        print()
-        if i != str("E"):
+                if board[count][index] == 'M':
+                    print("  {}".format('M'), end=" ")
+                if board[count][index] == 'H':
+                    print("  {}".format('H'), end=" ")
+                if board[count][index] == 'S':
+                    print("  {}".format('S'), end=" ")
+        print("")
+        if letter != str("E"):
             print()
         count += 1
     print("")
+
 
 def get_ship_move(board, player):
     """Returns the coordinates of a valid move for player on board."""
@@ -193,7 +195,7 @@ def get_move(board, player):
                         print("you're not on the board")
                     else:
                         col = col - 1
-                        if board[row][col] == "M" or board[row][col] == "M":
+                        if board[row][col] == "M" or board[row][col] == "H":
                             print("Please choose another coordinate!")
                         else:
                             return row, col
@@ -202,13 +204,11 @@ def get_move(board, player):
                 print(wrong_input)
 
 
-
-
 def choose_player(player_index):
     if int(player_index) % 2 == 1:
         player = "Player 1"
     else:
-        player = "Player 2"  
+        player = "Player 2"
     return player
 
 
@@ -217,7 +217,7 @@ def mark(board, row, col, player):
         board[row][col] = "H"
     else:
         board[row][col] = "M"
-    
+
 
 def choose_ship_board(player):
     if player == "Player 1":
@@ -225,6 +225,7 @@ def choose_ship_board(player):
     else:
         board = board2
     return board
+
 
 def choose_game_board(player):
     if player == "Player 1":
