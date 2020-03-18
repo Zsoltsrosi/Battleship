@@ -1,4 +1,5 @@
 import time
+import os
 
 
 def init_board1():
@@ -26,103 +27,98 @@ def print_ship_board(board, player):
 
 def place_ship(board, player):
     ship_count_size2 = 1
-    ship_count_size3 = 1
-    while ship_count_size2 > 0 or ship_count_size3 > 0:
-        ships = [f"1. Destroyer (size: 2 amount left: {ship_count_size2})",f"2. Submarine (size: 3 size: 2 amount left: {ship_count_size3})"]
+    ship_count_size1 = 1
+    while ship_count_size2 > 0 or ship_count_size1 > 0:
+        ships = [f"1. Destroyer (size: 2 amount left: {ship_count_size2})", f"2. Submarine (size: 1 amount left: {ship_count_size1})"]
         for i in ships:
             print(i)
-        ship = input(" %s choose ship size, 2 or 3: " % player)
-        if ship == str(2):
+        if ship_count_size2 > 0 and ship_count_size1 > 0:
+            ship = input(" %s choose ship size, 1 or 2: " % player)
+        elif ship_count_size2 > 0 and ship_count_size1 == 0:
+            ship = input(" %s choose ship size, 2: " % player)
+        elif ship_count_size1 > 0 and ship_count_size2 == 0:
+            ship = input(" %s choose ship size, 1: " % player)
+        if ship == str(2) and ship_count_size2 > 0:
             ship_size = 2
             row, col = get_ship_move(board, player)
             ship_direction = input("Vertical or Horizontal placement (v/h)").lower()
             okay_placement = check_next_to_ship(row, col, board, player, ship_size, ship_direction)
             if ship_direction == 'v':
-                if okay_placement is True:
-                    if board[row + 1][col] == "0":
+                try:
+                    if okay_placement is True:
                         board[row][col] = "X"
                         board[row + 1][col] = "X"
                         ship_count_size2 -= 1
+                        print_ship_board(board, player)
                     else:
+                        print_ship_board(board, player) 
                         print("Invalid input")
-                else:
-                    print("Invalid input")
-            elif ship_direction == 'h':
-                if okay_placement is True:
-                    if board[row][col + 1] == "0":
+                except IndexError:
+                    board[row][col] = "0"
+                    print_ship_board(board, player) 
+                    print("Invalid input")  
+            try:
+                if ship_direction == 'h':
+                    if okay_placement is True:
                         board[row][col] = "X"
                         board[row][col + 1] = "X"
                         ship_count_size2 -= 1
+                        print_ship_board(board, player) 
                     else:
+                        print_ship_board(board, player) 
                         print("Invalid input")
                 else:
+                    print_ship_board(board, player) 
                     print("Invalid input")
-        if ship == str(3):
-            ship_size = 3
+            except IndexError:
+                board[row][col] = "0"
+                print_ship_board(board, player) 
+                print("Invalid input")  
+        if ship == str(1) and ship_count_size1 > 0:
+            ship_size = 1
             row, col = get_ship_move(board, player)
-            ship_direction = input("Vertical or Horizontal placement (v/h)").lower()
-            okay_placement = check_next_to_ship(row, col, board, player, ship_size, ship_direction)
-            if ship_direction == 'v':
-                if okay_placement is True:
-                    if board[row + 1][col] == "0" and board[row + 2][col] == "0":
-                        board[row][col] = "X"
-                        board[row + 1][col] = "X"
-                        board[row + 2][col] = "X"
-                        ship_count_size3 -= 1
-                    else:
-                        print("Invalid input")
-                else:
-                    print("Invalid input")
-            elif ship_direction == 'h':
-                if okay_placement is True:
-                    if board[row][col + 1] == "0" and board[row][col + 2] == "0":
-                        board[row][col] = "X"
-                        board[row][col + 1] = "X"
-                        board[row][col + 2] = "X"
-                        ship_count_size3 -= 1
-                    else:
-                        print("Invalid input")
-                else:
-                    print("Invalid input")
+            okay_placement = check_next_to_ship(row, col, board, player, ship_size)
+            if okay_placement is True:
+                if board[row][col] == "0":
+                    board[row][col] = "X"
+                    ship_count_size1 -= 1
+                    print_ship_board(board, player) 
 
-        print_ship_board(board, player)
+            else:
+                print_ship_board(board, player) 
+                print("Invalid input")
+        
 
-
-def check_next_to_ship(row, col, board, player, ship_size, ship_direction):
+def check_next_to_ship(row, col, board, player, ship_size, ship_direction=None):
     try:
-        if ship_size == 2 and ship_direction == 'v':          
+        if ship_size == 2 and ship_direction == 'v':
             if board[row + 1][col] == "0" and board[row + 1][col + 1] == "0" and board[row][col + 1] == "0":
                 if board[row + 2][col] == "0" and board[row + 1][col - 1] == "0" and board[row][col - 1] == "0":
                     if board[row - 1][col] == "0":
                         return True
-                    else:
-                        return False
+            else:
+                return False
         elif ship_size == 2 and ship_direction == 'h':
             if board[row][col + 1] == "0" and board[row][col + 2] == "0" and board[row][col - 1] == "0":
                 if board[row + 1][col] == "0" and board[row + 1][col + 1] == "0" and board[row - 1][col] == "0":
                     if board[row - 1][col + 1] == "0":
                         return True
-                    else:
-                        return False
-        elif ship_size == 3 and ship_direction == 'v':
-            if board[row + 1][col] == "0" and board[row + 1][col + 1] == "0" and board[row][col + 1] == "0":
-                if board[row + 2][col] == "0" and board[row + 1][col - 1] == "0" and board[row][col - 1] == "0":
-                    if board[row - 1][col] == "0" and board[row + 3][col] == "0" and board[row + 2][col + 1] == "0" and board[row + 2][col - 1] == "0":
+            else:
+                return False
+        elif ship_size == 1:
+            if board[row + 1][col] == "0" and board[row][col + 1] == "0":
+                if board[row][col - 1] == "0":
+                    if board[row - 1][col] == "0":
                         return True
-                    else:
-                        return False
-        elif ship_size == 3 and ship_direction == 'h':
-            if board[row][col + 1] == "0" and board[row][col + 2] == "0" and board[row][col - 1] == "0":
-                if board[row + 1][col] == "0" and board[row + 1][col + 1] == "0" and board[row - 1][col] == "0":
-                    if board[row - 1][col + 1] == "0" and board[row][col + 3] == "0" and board[row + 1][col + 2] == "0" and board[row - 1][col + 2] == "0":
-                        return True
-                    else:
-                        return False
+            else:
+                return False
     except IndexError:
-        print("Invalid Input")
+        return True
+        # print("Invalid Input")
 
 
 def print_game_board(board, player):
+    os.system("clear")
     print()
     print("   1   2   3   4   5")
     print("")
@@ -210,7 +206,7 @@ def choose_player(player_index):
     if int(player_index) % 2 == 1:
         player = "Player 1"
     else:
-        player = "Player 2"  
+        player = "Player 2"
     return player
 
 
@@ -219,6 +215,33 @@ def mark(board, row, col, player):
         board[row][col] = "H"
     else:
         board[row][col] = "M"
+
+
+def valid_coordinate(a, b):
+    if -1 < a < 5 and -1 < b < 5:
+        return True
+    else:
+        return False
+
+        
+def check_sunken_ship(board, player):
+    for (i, row) in enumerate(board):
+        for (j, col) in enumerate(row):
+            sunk = False
+            if col == 'H':
+                print(i, j)
+                if valid_coordinate(i + 1, j) and board[i + 1][j] == 'X':
+                    sunk = False
+                elif valid_coordinate(i, j - 1) and board[i][j - 1] == 'X':
+                    sunk = False
+                elif valid_coordinate(i, j + 1) and board[i][j + 1] == 'X':
+                    sunk = False
+                elif valid_coordinate(i - 1, j) and board[i - 1][j] == 'X':
+                    sunk = False
+                else:
+                    sunk = True
+            if sunk:
+                board[i][j] = 'S'
 
 
 def choose_ship_board(player):
@@ -256,6 +279,7 @@ def main_menu():
         time.sleep(1)
         row, col = get_move(board, player)
         mark(board, row, col, player)
+        check_sunken_ship(board, player)
         player_index += 1
 
 
