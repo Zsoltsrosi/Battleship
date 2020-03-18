@@ -25,8 +25,12 @@ def print_ship_board(board, player):
 
 
 def place_ship(board, player):
-    ship_count = 2
-    while ship_count > 0:
+    ship_count_size2 = 1
+    ship_count_size3 = 1
+    while ship_count_size2 > 0 or ship_count_size3 > 0:
+        ships = [f"1. Destroyer (size: 2 amount left: {ship_count_size2})",f"2. Submarine (size: 3 size: 2 amount left: {ship_count_size3})"]
+        for i in ships:
+            print(i)
         ship = input(" %s choose ship size, 2 or 3: " % player)
         if ship == str(2):
             ship_size = 2
@@ -38,8 +42,7 @@ def place_ship(board, player):
                     if board[row + 1][col] == "0":
                         board[row][col] = "X"
                         board[row + 1][col] = "X"
-                        ship_count -= 1
-                        print(ship_count)
+                        ship_count_size2 -= 1
                     else:
                         print("Invalid input")
                 else:
@@ -49,8 +52,7 @@ def place_ship(board, player):
                     if board[row][col + 1] == "0":
                         board[row][col] = "X"
                         board[row][col + 1] = "X"
-                        ship_count -= 1
-                        print(ship_count)
+                        ship_count_size2 -= 1
                     else:
                         print("Invalid input")
                 else:
@@ -66,7 +68,7 @@ def place_ship(board, player):
                         board[row][col] = "X"
                         board[row + 1][col] = "X"
                         board[row + 2][col] = "X"
-                        ship_count -= 1
+                        ship_count_size3 -= 1
                     else:
                         print("Invalid input")
                 else:
@@ -77,7 +79,7 @@ def place_ship(board, player):
                         board[row][col] = "X"
                         board[row][col + 1] = "X"
                         board[row][col + 2] = "X"
-                        ship_count -= 1
+                        ship_count_size3 -= 1
                     else:
                         print("Invalid input")
                 else:
@@ -208,7 +210,7 @@ def choose_player(player_index):
     if int(player_index) % 2 == 1:
         player = "Player 1"
     else:
-        player = "Player 2"
+        player = "Player 2"  
     return player
 
 
