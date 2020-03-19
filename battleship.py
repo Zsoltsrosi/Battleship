@@ -124,11 +124,12 @@ def print_ship_board(board, player, length_input):
 
 
 def place_ship(board, player, length_input):
-    ship_count_size2 = 2
-    ship_count_size1 = 1
+    ship_count_size2 = (length_input // 2)
+    ship_count_size1 = (length_input // 2) - 1
+
     while ship_count_size2 > 0 or ship_count_size1 > 0:
         print()
-        ships = [f"1. Destroyer (size: 2 amount left: {ship_count_size2})", f"2. Submarine (size: 1 amount left: {ship_count_size1})"]
+        ships = [f"1. Submarine (size: 1 amount left: {ship_count_size1})", f"2. Destroyer (size: 2 amount left: {ship_count_size2})"]
         for i in ships:
             print(i)
         print() 
@@ -479,8 +480,6 @@ def board_size():
             return int(board_size_given)
         else:
             print("Invalid input! (must be between 5-10)")
-
-
 
 
 def main_menu():
