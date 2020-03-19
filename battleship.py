@@ -117,11 +117,16 @@ def check_next_to_ship(row, col, board, player, ship_size, ship_direction=None):
         # print("Invalid Input")
 
 
-def print_game_board(board, player):
-    os.system("clear")
-    print()
-    print("   1   2   3   4   5")
-    print("")
+
+def print_game_board_player1(board2, player="Player 1"):
+    print(player, end='\t\t\t')
+    yield
+    print('', end='')
+    yield
+    print("    1   2   3   4   5", end='')
+    yield
+    print('', end='')
+    yield
     count = 0
     for letter in ["A", "B", "C", "D", "E"]:
         print(letter, end=" ")
@@ -341,6 +346,9 @@ def main_menu():
         row, col = get_move(board, player)
         mark(board, row, col, player)
         check_sunken_ship(board, player)
+        print_both_boards(board1, board2)
+        time.sleep(1)
+        winner = is_win(player, board)
         player_index += 1
 
 
