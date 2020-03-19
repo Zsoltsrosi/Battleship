@@ -42,7 +42,18 @@ def is_win(player, board):
         return False
     else:        
         return True
-                
+
+
+def logo():
+
+    print('''
+        ██████╗  █████╗ ████████╗████████╗██╗     ███████╗    ███████╗██╗  ██╗██╗██████╗ 
+        ██╔══██╗██╔══██╗╚══██╔══╝╚══██╔══╝██║     ██╔════╝    ██╔════╝██║  ██║██║██╔══██╗
+        ██████╔╝███████║   ██║      ██║   ██║     █████╗      ███████╗███████║██║██████╔╝
+        ██╔══██╗██╔══██║   ██║      ██║   ██║     ██╔══╝      ╚════██║██╔══██║██║██╔═══╝ 
+        ██████╔╝██║  ██║   ██║      ██║   ███████╗███████╗    ███████║██║  ██║██║██║     
+        ╚═════╝ ╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚══════╝╚══════╝    ╚══════╝╚═╝  ╚═╝╚═╝╚═╝     
+        ''')
                 
                 
 def intro():
@@ -469,7 +480,18 @@ def game_play(player_index, length_input, board1, board2):
     win_screen(player)
 
 
-# def start_menu():
+def start_menu():
+    logo()
+    print("1. Play game")
+    print("2. Quit")
+    print()
+    game_start_input = int(input("Pick game mode: "))
+    if game_start_input == 1:
+        return True
+    elif game_start_input == 2:
+        exit()
+    else:
+        print("Sorry, not sure what you meant by that")
 
 
 def board_size():
@@ -484,11 +506,11 @@ def board_size():
 
 def main_menu():
     player_index = 1
+    # intro()
+    start_menu()
     length_input = board_size()
     board1 = init_board1(length_input)
     board2 = init_board2(length_input)
-    # intro()
-    # start_menu()
     ship_placement_phase(player_index, length_input, board1, board2)
     game_play(player_index, length_input, board1, board2)
    
