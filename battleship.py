@@ -46,7 +46,7 @@ def is_win(player, board):
                 
                 
 def intro():
-    """plays before starting the game"""
+
     l = []
     l.append(" ______     ______     ______   ______   __         ______     ______     __  __     __     ______  ")
     l.append("/\  == \   /\  __ \   /\__  _\ /\__  _\ /\ \       /\  ___\   /\  ___\   /\ \_\ \   /\ \   /\  == \ ")
@@ -69,7 +69,7 @@ def intro():
         os.system("clear")
         for j in l:
             print(j[-i:])
-            time.sleep(0.003)  # slowing down
+            time.sleep(0.001) 
 
     time.sleep(1)
     input("""
@@ -81,33 +81,49 @@ def intro():
         os.system("clear")
         for j in l:
             print(j[i:])
-            time.sleep(0.003)
+            time.sleep(0.001)
 
-def init_board1():
-    board_player1_ships = [["0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0"]]
+def init_board1(length_input):
+    board_player1_ships = [['0' for x in range(length_input)] for x in range(length_input)]
     return board_player1_ships
 
 
-def init_board2():
-    board_player2_ships = [["0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0"]]
+def init_board2(length_input):
+    board_player2_ships = [['0' for x in range(length_input)] for x in range(length_input)]
     return board_player2_ships
 
 
-def print_ship_board(board, player):
+def print_ship_board(board, player, length_input):
     os.system("clear")
-    print("1".rjust(4) + "2".rjust(4) + "3".rjust(4) + "4".rjust(4) + "5".rjust(4) + "\n")
-    print("A".ljust(2) + str(board[0][0]).center(3) + "|" + str(board[0][1]).center(3) + "|" + str(board[0][2]).center(3) + "|" + str(board[0][3]).center(3) + "|" + str(board[0][4]).center(3))
-    print("  ---+---+---+---+---")
-    print("B".ljust(2) + str(board[1][0]).center(3) + "|" + str(board[1][1]).center(3) + "|" + str(board[1][2]).center(3) + "|" + str(board[1][3]).center(3) + "|" + str(board[1][4]).center(3))
-    print("  ---+---+---+---+---")
-    print("C".ljust(2) + str(board[2][0]).center(3) + "|" + str(board[2][1]).center(3) + "|" + str(board[2][2]).center(3) + "|" + str(board[2][3]).center(3) + "|" + str(board[2][4]).center(3))
-    print("  ---+---+---+---+---")
-    print("D".ljust(2) + str(board[3][0]).center(3) + "|" + str(board[3][1]).center(3) + "|" + str(board[3][2]).center(3) + "|" + str(board[3][3]).center(3) + "|" + str(board[3][4]).center(3))
-    print("  ---+---+---+---+---")
-    print("E".ljust(2) + str(board[4][0]).center(3) + "|" + str(board[4][1]).center(3) + "|" + str(board[4][2]).center(3) + "|" + str(board[4][3]).center(3) + "|" + str(board[4][4]).center(3))
+    print()
+    numbers = ("12345678910")
+    if length_input < 10:
+        print("    " + "   ".join(numbers[:length_input]))
+    elif length_input == 10:
+        print("    " + "   ".join(numbers[:length_input]) + '0')
+    print("")
+    count = 0
+    alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
+    for letter in range(length_input):
+        print(alphabet[letter], end=" ")
+        for index in range(length_input):
+            if index < (length_input + 1):
+                if board[count][index] == '0':
+                    print("  0", end=" ")
+                if board[count][index] == 'X':
+                    print("  {}".format('X'), end=" ")
+                if board[count][index] == 'H':
+                    print("  {}".format('H'), end=" ")
+                if board[count][index] == 'S':
+                    print("  {}".format('S'), end=" ")
+        print("")
+        if letter != str("J"):
+            print()
+        count += 1
+    print("")
 
 
-def place_ship(board, player):
+def place_ship(board, player, length_input):
     ship_count_size2 = 2
     ship_count_size1 = 1
     while ship_count_size2 > 0 or ship_count_size1 > 0:
@@ -124,7 +140,7 @@ def place_ship(board, player):
             ship = input("%s choose ship size, 1: " % player)
         if ship == str(2) and ship_count_size2 > 0:
             ship_size = 2
-            row, col = get_ship_move(board, player)
+            row, col = get_ship_move(board, player, length_input)
             ship_direction = input("Vertical or Horizontal placement (v/h)").lower()
             okay_placement = check_next_to_ship(row, col, board, player, ship_size, ship_direction)
             if ship_direction == 'v':
@@ -133,13 +149,13 @@ def place_ship(board, player):
                         board[row][col] = "X"
                         board[row + 1][col] = "X"
                         ship_count_size2 -= 1
-                        print_ship_board(board, player)
+                        print_ship_board(board, player, length_input)
                     else:
-                        print_ship_board(board, player) 
+                        print_ship_board(board, player, length_input) 
                         print("Ships too close")
                 except IndexError:
                     board[row][col] = "0"
-                    print_ship_board(board, player) 
+                    print_ship_board(board, player, length_input) 
                     print("Invalid input")  
             
             elif ship_direction == 'h':
@@ -148,32 +164,32 @@ def place_ship(board, player):
                         board[row][col] = "X"
                         board[row][col + 1] = "X"
                         ship_count_size2 -= 1
-                        print_ship_board(board, player) 
+                        print_ship_board(board, player, length_input) 
                     else:
-                        print_ship_board(board, player) 
+                        print_ship_board(board, player, length_input) 
                         print("Ships too close")
                 except IndexError:
                     board[row][col] = "0"
-                    print_ship_board(board, player) 
+                    print_ship_board(board, player, length_input) 
             else:
-                    print_ship_board(board, player) 
+                    print_ship_board(board, player, length_input) 
                     print("Invalid input")
                 # print("Invalid input")  
         elif ship == str(1) and ship_count_size1 > 0:
             ship_size = 1
-            row, col = get_ship_move(board, player)
+            row, col = get_ship_move(board, player, length_input)
             okay_placement = check_next_to_ship(row, col, board, player, ship_size)
             if okay_placement is True:
                 if board[row][col] == "0":
                     board[row][col] = "X"
                     ship_count_size1 -= 1
-                    print_ship_board(board, player) 
+                    print_ship_board(board, player, length_input) 
 
             else:
-                print_ship_board(board, player) 
+                print_ship_board(board, player, length_input) 
                 print("Ships too close")
         else:
-            print_ship_board(board, player) 
+            print_ship_board(board, player, length_input) 
             print('Invalid input')
         
 
@@ -204,20 +220,27 @@ def check_next_to_ship(row, col, board, player, ship_size, ship_direction=None):
         return True
 
 
-def print_game_board_player1(board2, player="Player 1"):
-    print(player, end='\t\t\t')
+def print_game_board_player1(board2, length_input, player="Player 1"):
+    print('', end='')
+    yield
+    print(player, end='\t')
     yield
     print('', end='')
     yield
-    print("    1   2   3   4   5", end='')
+    numbers = ("12345678910")
+    if length_input < 10:
+        print("    " + "   ".join(numbers[:length_input]), end='')
+    elif length_input == 10:
+        print("    " + "   ".join(numbers[:length_input]) + '0', end='')
     yield
     print('', end='')
     yield
     count = 0
-    for letter in ["A", "B", "C", "D", "E"]:
-        print(letter, end=" ")
-        for index in [0, 1, 2, 3, 4]:
-            if index < 6:
+    alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
+    for letter in range(length_input):
+        print(alphabet[letter], end=" ")
+        for index in range(length_input):
+            if index < (length_input + 1):
                 if board2[count][index] == '0' or board2[count][index] == 'X':
                     print("  0", end=" ")
                 if board2[count][index] == 'M':
@@ -227,28 +250,35 @@ def print_game_board_player1(board2, player="Player 1"):
                 if board2[count][index] == 'S':
                     print("  {}".format('S'), end=" ")
         yield
-        if letter != str("E"):
+        if letter != str("J"):
             print('',end='')
             yield
         count += 1
-    print("", end='')
+    print('', end='')
     yield
 
 
-def print_game_board_player2(board1, player="Player 2"):
-    print(player, end='')
+def print_game_board_player2(board1, length_input, player="Player 2"):
+    print('', end='')
+    yield
+    print(" ".rjust(length_input * 3) +player, end='')
     yield
     print('', end='')
     yield
-    print("\t\t    1   2   3   4   5", end='')
+    numbers = ("12345678910")
+    if length_input < 10:
+        print("".rjust(length_input+4) + "   ".join(numbers[:length_input]), end='')
+    elif length_input == 10:
+        print(" ".rjust(length_input+4) + "   ".join(numbers[:length_input]) + '0', end='')
     yield
     print('', end='')
     yield
     count = 0
-    for letter in ["A", "B", "C", "D", "E"]:
-        print(letter.rjust(10), end=" ")
-        for index in [0, 1, 2, 3, 4]:
-            if index < 6:
+    alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
+    for letter in range(length_input):
+        print((alphabet[letter].rjust(length_input)), end=" ")
+        for index in range(length_input):
+            if index < (length_input + 1):
                 if board1[count][index] == '0' or board1[count][index] == 'X':
                     print("  0", end=" ")
                 if board1[count][index] == 'M':
@@ -258,17 +288,17 @@ def print_game_board_player2(board1, player="Player 2"):
                 if board1[count][index] == 'S':
                     print("  {}".format('S'), end=" ")
         yield
-        if letter != str("E"):
+        if letter != str("J"):
             print('',end='')
             yield
         count += 1
-    print("", end='')
+    print('', end='')
     yield
 
 
-def print_both_boards(board1, board2):
+def print_both_boards(board1, board2, length_input):
     os.system('clear')
-    player_1_board, player_2_board = print_game_board_player1(board2), print_game_board_player2(board1)
+    player_1_board, player_2_board = print_game_board_player1(board2, length_input), print_game_board_player2(board1, length_input)
 
     while True:
         try:
@@ -280,12 +310,12 @@ def print_both_boards(board1, board2):
             break
 
 
-def get_ship_move(board, player):
+def get_ship_move(board, player, length_input):
     """Returns the coordinates of a valid move for player on board."""
     row, col = 0, 0
     while True:
         print()
-        move = input("%s choose coordinates:  " % player)
+        move = input("%s choose coordinates:  " % player).lower()
         wrong_input = "Input form was incorrect, please try again"
         location = list(move)
         if move == 'quit':
@@ -298,7 +328,7 @@ def get_ship_move(board, player):
                     print(wrong_input)
                 else:
                     row, col = (ord(location[0].lower()) - 97, int(location[1]))
-                    if row >= 6 or col >= 6:
+                    if row >= (length_input + 1) or col >= (length_input + 1):
                         print("you're not on the board")
                     else:
                         col = col - 1
@@ -311,12 +341,12 @@ def get_ship_move(board, player):
                 print(wrong_input)
 
 
-def get_move(board, player):
+def get_move(board, player, length_input):
     """Returns the coordinates of a valid move for player on board."""
     row, col = 0, 0
     while True:
         print()
-        move = input("%s choose coordinates:  " %player)
+        move = input("%s choose coordinates:  " %player).lower()
         wrong_input = "Input form was incorrect, please try again"
         location = list(move)
         if move == 'quit':
@@ -329,7 +359,7 @@ def get_move(board, player):
                     print(wrong_input)
                 else:
                     row, col = (ord(location[0].lower()) - 97, int(location[1]))
-                    if row >= 6 or col >= 6:
+                    if row >= (length_input + 1) or col >= (length_input + 1):
                         print("you're not on the board")
                     else:
                         col = col - 1
@@ -361,26 +391,26 @@ def mark(board, row, col, player):
         time.sleep(2)
 
 
-def valid_coordinate(a, b):
-    if -1 < a < 5 and -1 < b < 5:
+def valid_coordinate(a, b, length_input):
+    if -1 < a < length_input and -1 < b < length_input:
         return True
     else:
         return False
 
         
-def check_sunken_ship(board, player):
+def check_sunken_ship(board, player, length_input):
     sunken = 1
     for (i, row) in enumerate(board):
         for (j, col) in enumerate(row):
             sunk = False
             if col == 'H':
-                if valid_coordinate(i + 1, j) and board[i + 1][j] == 'X':
+                if valid_coordinate(i + 1, j, length_input) and board[i + 1][j] == 'X':
                     sunk = False
-                elif valid_coordinate(i, j - 1) and board[i][j - 1] == 'X':
+                elif valid_coordinate(i, j - 1, length_input) and board[i][j - 1] == 'X':
                     sunk = False
-                elif valid_coordinate(i, j + 1) and board[i][j + 1] == 'X':
+                elif valid_coordinate(i, j + 1, length_input) and board[i][j + 1] == 'X':
                     sunk = False
-                elif valid_coordinate(i - 1, j) and board[i - 1][j] == 'X':
+                elif valid_coordinate(i - 1, j, length_input) and board[i - 1][j] == 'X':
                     sunk = False
                 else:
                     sunk = True
@@ -392,8 +422,7 @@ def check_sunken_ship(board, player):
                     sunken -= 1
                 
 
-
-def choose_ship_board(player):
+def choose_ship_board(player, board1, board2):
     if player == "Player 1":
         board = board1
     else:
@@ -401,7 +430,7 @@ def choose_ship_board(player):
     return board
 
 
-def choose_game_board(player):
+def choose_game_board(player,board1, board2):
     if player == "Player 1":
         board = board2
     else:
@@ -411,28 +440,28 @@ def choose_game_board(player):
 
 
 
-def ship_placement_phase(player_index):
+def ship_placement_phase(player_index, length_input, board1, board2):
     while player_index < 3:
         player = choose_player(player_index)
-        board = choose_ship_board(player)
-        print_ship_board(board, player)
-        place_ship(board, player)
+        board = choose_ship_board(player,board1, board2)
+        print_ship_board(board, player, length_input)
+        place_ship(board, player, length_input)
         player_index += 1
         os.system("clear")
         input("Ready? (Press any key) ")
         os.system("clear")
 
 
-def game_play(player_index):
+def game_play(player_index, length_input, board1, board2):
     winner = False
     while winner is False:
         player = choose_player(player_index)
-        board = choose_game_board(player)
-        print_both_boards(board1, board2)
-        row, col = get_move(board, player)
+        board = choose_game_board(player, board1, board2)
+        print_both_boards(board1, board2, length_input)
+        row, col = get_move(board, player, length_input)
         mark(board, row, col, player)
-        check_sunken_ship(board, player)
-        print_both_boards(board1, board2)
+        check_sunken_ship(board, player, length_input)
+        print_both_boards(board1, board2, length_input)
         time.sleep(1)
         winner = is_win(player, board)
         player_index += 1
@@ -442,18 +471,27 @@ def game_play(player_index):
 # def start_menu():
 
 
+def board_size():
+    while True:
+        board_size_given = input("Choose a board size (5 - 10):  ")
+        correct_board_sizes = ["5", "6", "7", "8", "9", "10"]
+        if board_size_given in correct_board_sizes:
+            return int(board_size_given)
+        else:
+            print("Invalid input! (must be between 5-10)")
 
-board1 = init_board1()
-board2 = init_board2()
 
 
 
 def main_menu():
     player_index = 1
-    intro()
+    length_input = board_size()
+    board1 = init_board1(length_input)
+    board2 = init_board2(length_input)
+    # intro()
     # start_menu()
-    ship_placement_phase(player_index)
-    game_play(player_index)
+    ship_placement_phase(player_index, length_input, board1, board2)
+    game_play(player_index, length_input, board1, board2)
    
 
 
