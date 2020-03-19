@@ -2,6 +2,87 @@ import time
 import os
 
 
+def win_screen(player):
+    os.system('clear')
+    if player == "Player 1":
+        print('''
+                             ____    ___                                           _      __      __                     
+                            /\  _`\ /\_ \                                        /' \    /\ \  __/\ \                    
+                            \ \ \L\ \//\ \      __     __  __     __   _ __     /\_, \   \ \ \/\ \ \ \    ___     ___    
+                             \ \ ,__/ \ \ \   /'__`\  /\ \/\ \  /'__`\/\`'__\   \/_/\ \   \ \ \ \ \ \ \  / __`\ /' _ `\  
+                              \ \ \/   \_\ \_/\ \L\.\_\ \ \_\ \/\  __/\ \ \/       \ \ \   \ \ \_/ \_\ \/\ \L\ \/\ \/\ \ 
+                               \ \_\   /\____\ \__/.\_\\/`____ \ \____\\ \_\          \ \_\   \ `\___x___/\ \____/\ \_\ \_
+                                \/_/   \/____/\/__/\/_/ `/___/> \/____/ \/_/         \/_/    '\/__//__/  \/___/  \/_/\/_/
+                                                           /\___/                                                        
+                                                           \/__/                                                         
+                                    
+                ''')
+    else:           
+        print('''
+                 ____    ___                                            ___       __      __                     
+                /\  _`\ /\_ \                                         /'___`\    /\ \  __/\ \                    
+                \ \ \L\ \//\ \      __     __  __     __   _ __      /\_\ /\ \   \ \ \/\ \ \ \    ___     ___    
+                 \ \ ,__/ \ \ \   /'__`\  /\ \/\ \  /'__`\/\`'__\    \/_/// /__   \ \ \ \ \ \ \  / __`\ /' _ `\  
+                  \ \ \/   \_\ \_/\ \L\.\_\ \ \_\ \/\  __/\ \ \/        // /_\ \   \ \ \_/ \_\ \/\ \L\ \/\ \/\ \ 
+                   \ \_\   /\____\ \__/.\_\\/`____ \ \____\\ \_\       /\______/    \ `\___x___/\ \____/\ \_\ \_
+                    \/_/   \/____/\/__/\/_/ `/___/> \/____/ \/_/       \/_____/      '\/__//__/  \/___/  \/_/\/_/
+                                               /\___/                                                            
+                                               \/__/                                                                   
+                ''')    
+
+                   
+def is_win(player, board):
+    x_count = 0
+    for row in board:
+        for collumn in row:
+            if collumn == "X":
+                x_count += 1
+
+    if x_count != 0:
+        return False
+    else:        
+        return True
+                
+                
+                
+def intro():
+    """plays before starting the game"""
+    l = []
+    l.append(" ______     ______     ______   ______   __         ______     ______     __  __     __     ______  ")
+    l.append("/\  == \   /\  __ \   /\__  _\ /\__  _\ /\ \       /\  ___\   /\  ___\   /\ \_\ \   /\ \   /\  == \ ")
+    l.append("\ \  __<   \ \  __ \  \/_/\ \/ \/_/\ \/ \ \ \____  \ \  __\   \ \___  \  \ \  __ \  \ \ \  \ \  __/ ")
+    l.append(" \ \_____\  \ \_\ \_\    \ \_\    \ \_\  \ \_____\  \ \_____\  \/\_____\  \ \_\ \_\  \ \_\  \ \_\   ")
+    l.append("  \/_____/   \/_/\/_/     \/_/     \/_/   \/_____/   \/_____/   \/_____/   \/_/\/_/   \/_/   \/_/   ")
+    l.append("                                                                                                    ")
+    l.append("                                                  # #  ( )                                          ")
+    l.append("                                               ___#_#___|__                                         ")
+    l.append("                                           _  |____________|  _                                     ")
+    l.append("                                    _=====| | |            | | |==== _                              ")
+    l.append("                              =====| |.---------------------------. | |====                         ")
+    l.append("                <--------------------'   .  .  .  .  .  .  .  .   '--------------/                  ")
+    l.append("                  \                                                             /                   ")
+    l.append("                   \___________________________________________________________/                    ")
+    l.append("               wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww                ")
+    l.append("             wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww               ")
+    l.append("                wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww                 ")
+    for i in range(1, len(l[0]) + 1):  # fly in from left animation
+        os.system("clear")
+        for j in l:
+            print(j[-i:])
+            time.sleep(0.003)  # slowing down
+
+    time.sleep(1)
+    input("""
+                      +-++-++-++-++-+ +-++-++-++-++-+ +-++-+ +-++-++-++-++-+
+                      |P||R||E||S||S| |E||N||T||E||R| |T||O| |S||T||A||R||T|
+                      +-++-++-++-++-+ +-++-++-++-++-+ +-++-+ +-++-++-++-++-+""")
+
+    for i in range(len(l[0])):  # flying out to the left
+        os.system("clear")
+        for j in l:
+            print(j[i:])
+            time.sleep(0.003)
+
 def init_board1():
     board_player1_ships = [["0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0"], ["0", "0", "0", "0", "0"]]
     return board_player1_ships
@@ -13,6 +94,7 @@ def init_board2():
 
 
 def print_ship_board(board, player):
+    os.system("clear")
     print("1".rjust(4) + "2".rjust(4) + "3".rjust(4) + "4".rjust(4) + "5".rjust(4) + "\n")
     print("A".ljust(2) + str(board[0][0]).center(3) + "|" + str(board[0][1]).center(3) + "|" + str(board[0][2]).center(3) + "|" + str(board[0][3]).center(3) + "|" + str(board[0][4]).center(3))
     print("  ---+---+---+---+---")
@@ -26,18 +108,20 @@ def print_ship_board(board, player):
 
 
 def place_ship(board, player):
-    ship_count_size2 = 1
+    ship_count_size2 = 2
     ship_count_size1 = 1
     while ship_count_size2 > 0 or ship_count_size1 > 0:
+        print()
         ships = [f"1. Destroyer (size: 2 amount left: {ship_count_size2})", f"2. Submarine (size: 1 amount left: {ship_count_size1})"]
         for i in ships:
             print(i)
+        print() 
         if ship_count_size2 > 0 and ship_count_size1 > 0:
-            ship = input(" %s choose ship size, 1 or 2: " % player)
+            ship = input("%s choose ship size, 1 or 2: " % player)
         elif ship_count_size2 > 0 and ship_count_size1 == 0:
-            ship = input(" %s choose ship size, 2: " % player)
+            ship = input("%s choose ship size, 2: " % player)
         elif ship_count_size1 > 0 and ship_count_size2 == 0:
-            ship = input(" %s choose ship size, 1: " % player)
+            ship = input("%s choose ship size, 1: " % player)
         if ship == str(2) and ship_count_size2 > 0:
             ship_size = 2
             row, col = get_ship_move(board, player)
@@ -52,7 +136,7 @@ def place_ship(board, player):
                         print_ship_board(board, player)
                     else:
                         print_ship_board(board, player) 
-                        print("Invalid input")
+                        print("Ships too close")
                 except IndexError:
                     board[row][col] = "0"
                     print_ship_board(board, player) 
@@ -66,7 +150,7 @@ def place_ship(board, player):
                         print_ship_board(board, player) 
                     else:
                         print_ship_board(board, player) 
-                        print("Invalid input")
+                        print("Ships too close")
                 else:
                     print_ship_board(board, player) 
                     print("Invalid input")
@@ -74,7 +158,7 @@ def place_ship(board, player):
                 board[row][col] = "0"
                 print_ship_board(board, player) 
                 print("Invalid input")  
-        if ship == str(1) and ship_count_size1 > 0:
+        elif ship == str(1) and ship_count_size1 > 0:
             ship_size = 1
             row, col = get_ship_move(board, player)
             okay_placement = check_next_to_ship(row, col, board, player, ship_size)
@@ -86,7 +170,10 @@ def place_ship(board, player):
 
             else:
                 print_ship_board(board, player) 
-                print("Invalid input")
+                print("Ships too close")
+        else:
+            print_ship_board(board, player) 
+            print('Invalid input')
         
 
 def check_next_to_ship(row, col, board, player, ship_size, ship_direction=None):
@@ -114,8 +201,6 @@ def check_next_to_ship(row, col, board, player, ship_size, ship_direction=None):
                 return False
     except IndexError:
         return True
-        # print("Invalid Input")
-
 
 
 def print_game_board_player1(board2, player="Player 1"):
@@ -181,7 +266,6 @@ def print_game_board_player2(board1, player="Player 2"):
 
 
 def print_both_boards(board1, board2):
-
     os.system('clear')
     player_1_board, player_2_board = print_game_board_player1(board2), print_game_board_player2(board1)
 
@@ -199,7 +283,8 @@ def get_ship_move(board, player):
     """Returns the coordinates of a valid move for player on board."""
     row, col = 0, 0
     while True:
-        move = input("%s choose coordinates" % player)
+        print()
+        move = input("%s choose coordinates:  " % player)
         wrong_input = "Input form was incorrect, please try again"
         location = list(move)
         if move == 'quit':
@@ -229,7 +314,8 @@ def get_move(board, player):
     """Returns the coordinates of a valid move for player on board."""
     row, col = 0, 0
     while True:
-        move = input("%s choose coordinates" % player)
+        print()
+        move = input("%s choose coordinates:  " %player)
         wrong_input = "Input form was incorrect, please try again"
         location = list(move)
         if move == 'quit':
@@ -313,23 +399,9 @@ def choose_game_board(player):
     return board
 
 
-def is_win(player, board):
-    for row in board:
-        for collumn in row:
-            if collumn == "X":
-                return False
-            else:
-                os.system('clear')
-                print(f"{player} is the winner!")
 
 
-board1 = init_board1()
-board2 = init_board2()
-
-
-def main_menu():
-    player_index = 1
-    winner = False
+def ship_placement_phase(player_index):
     while player_index < 3:
         player = choose_player(player_index)
         board = choose_ship_board(player)
@@ -339,6 +411,10 @@ def main_menu():
         os.system("clear")
         input("Ready? (Press any key) ")
         os.system("clear")
+
+
+def game_play(player_index):
+    winner = False
     while winner is False:
         player = choose_player(player_index)
         board = choose_game_board(player)
@@ -350,6 +426,25 @@ def main_menu():
         time.sleep(1)
         winner = is_win(player, board)
         player_index += 1
+    win_screen(player)
+
+
+# def start_menu():
+
+
+
+board1 = init_board1()
+board2 = init_board2()
+
+
+
+def main_menu():
+    player_index = 1
+    # intro()
+    # start_menu()
+    ship_placement_phase(player_index)
+    game_play(player_index)
+   
 
 
 if __name__ == '__main__':
