@@ -333,7 +333,7 @@ def get_move(board, player):
                         print("you're not on the board")
                     else:
                         col = col - 1
-                        if board[row][col] == "M" or board[row][col] == "H":
+                        if board[row][col] == "M" or board[row][col] == "H" or board[row][col] == "S":
                             print("Please choose another coordinate!")
                         else:
                             return row, col
@@ -355,7 +355,7 @@ def mark(board, row, col, player):
         board[row][col] = "H"
         print('You have hit a ship!')
         time.sleep(2)
-    else:
+    elif board[row][col] == '0':
         board[row][col] = "M"
         print('You missed!')
         time.sleep(2)
@@ -450,7 +450,7 @@ board2 = init_board2()
 
 def main_menu():
     player_index = 1
-    # intro()
+    intro()
     # start_menu()
     ship_placement_phase(player_index)
     game_play(player_index)
