@@ -24,7 +24,7 @@ def win_screen(player):
                 \ \ \L\ \//\ \      __     __  __     __   _ __      /\_\ /\ \   \ \ \/\ \ \ \    ___     ___    
                  \ \ ,__/ \ \ \   /'__`\  /\ \/\ \  /'__`\/\`'__\    \/_/// /__   \ \ \ \ \ \ \  / __`\ /' _ `\  
                   \ \ \/   \_\ \_/\ \L\.\_\ \ \_\ \/\  __/\ \ \/        // /_\ \   \ \ \_/ \_\ \/\ \L\ \/\ \/\ \ 
-                   \ \_\   /\____\ \__/.\_\\/`____ \ \____\\ \_\       /\______/    \ `\___x___/\ \____/\ \_\ \_
+                   \ \_\   /\____\ \__/.\_\\/`____ \ \____\\ \_\         /\______/    \ `\___x___/\ \____/\ \_\ \_
                     \/_/   \/____/\/__/\/_/ `/___/> \/____/ \/_/       \/_____/      '\/__//__/  \/___/  \/_/\/_/
                                                /\___/                                                            
                                                \/__/                                                                   
@@ -141,8 +141,9 @@ def place_ship(board, player):
                     board[row][col] = "0"
                     print_ship_board(board, player) 
                     print("Invalid input")  
-            try:
-                if ship_direction == 'h':
+            
+            elif ship_direction == 'h':
+                try:
                     if okay_placement is True:
                         board[row][col] = "X"
                         board[row][col + 1] = "X"
@@ -151,13 +152,13 @@ def place_ship(board, player):
                     else:
                         print_ship_board(board, player) 
                         print("Ships too close")
-                else:
+                except IndexError:
+                    board[row][col] = "0"
+                    print_ship_board(board, player) 
+            else:
                     print_ship_board(board, player) 
                     print("Invalid input")
-            except IndexError:
-                board[row][col] = "0"
-                print_ship_board(board, player) 
-                print("Invalid input")  
+                # print("Invalid input")  
         elif ship == str(1) and ship_count_size1 > 0:
             ship_size = 1
             row, col = get_ship_move(board, player)
@@ -352,8 +353,12 @@ def choose_player(player_index):
 def mark(board, row, col, player):
     if board[row][col] == "X":
         board[row][col] = "H"
+        print('You have hit a ship!')
+        time.sleep(2)
     else:
         board[row][col] = "M"
+        print('You missed!')
+        time.sleep(2)
 
 
 def valid_coordinate(a, b):
@@ -364,11 +369,11 @@ def valid_coordinate(a, b):
 
         
 def check_sunken_ship(board, player):
+    sunken = 1
     for (i, row) in enumerate(board):
         for (j, col) in enumerate(row):
             sunk = False
             if col == 'H':
-                print(i, j)
                 if valid_coordinate(i + 1, j) and board[i + 1][j] == 'X':
                     sunk = False
                 elif valid_coordinate(i, j - 1) and board[i][j - 1] == 'X':
@@ -381,6 +386,11 @@ def check_sunken_ship(board, player):
                     sunk = True
             if sunk:
                 board[i][j] = 'S'
+                if sunken > 0:
+                    print("You have sunk a ship!")
+                    time.sleep(2)
+                    sunken -= 1
+                
 
 
 def choose_ship_board(player):
