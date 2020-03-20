@@ -1,5 +1,6 @@
 import time
 import os
+import random
 
 
 def win_screen(player):
@@ -94,6 +95,48 @@ def intro():
             print(j[i:])
             time.sleep(0.001)
 
+
+def waiting_screen():
+
+    l = []
+    l.append("                  ██╗    ██╗ █████╗ ██╗████████╗██╗███╗   ██╗ ██████╗                               ")
+    l.append("                  ██║    ██║██╔══██╗██║╚══██╔══╝██║████╗  ██║██╔════╝                               ")
+    l.append("                  ██║ █╗ ██║███████║██║   ██║   ██║██╔██╗ ██║██║  ███╗                              ")
+    l.append("                  ██║███╗██║██╔══██║██║   ██║   ██║██║╚██╗██║██║   ██║                              ")
+    l.append("                   ███╔███╔╝██║  ██║██║   ██║   ██║██║ ╚████║╚██████╔╝                              ")
+    l.append("                   ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝   ╚═╝   ╚═╝╚═╝  ╚═══╝ ╚═════╝                               ")
+    l.append("                                                                                                    ")
+    l.append("                                                  # #  ( )                                          ")
+    l.append("                                               ___#_#___|__                                         ")
+    l.append("                                           _  |____________|  _                                     ")
+    l.append("                                    _=====| | |            | | |==== _                              ")
+    l.append("                              =====| |.---------------------------. | |====                         ")
+    l.append("                <--------------------'   .  .  .  .  .  .  .  .   '--------------/                  ")
+    l.append("                  \                                                             /                   ")
+    l.append("                   \___________________________________________________________/                    ")
+    l.append("               wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww                ")
+    l.append("             wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww               ")
+    l.append("                wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww                 ")
+    for i in range(1, len(l[0]) + 1):  # fly in from left animation
+        os.system("clear")
+        for j in l:
+            print(j[-i:])
+            time.sleep(0.001) 
+
+    time.sleep(1)
+    input("""
+                      +-++-++-++-++-+ +-++-++-++-++-+ +-++-+ +-++-++-++-++-+
+                      |P||R||E||S||S| |E||N||T||E||R| |T||O| |S||T||A||R||T|
+                      +-++-++-++-++-+ +-++-++-++-++-+ +-++-+ +-++-++-++-++-+""")
+
+    for i in range(len(l[0])):  # flying out to the left
+        os.system("clear")
+        for j in l:
+            print(j[i:])
+            time.sleep(0.001)
+
+
+
 def init_board1(length_input):
     board_player1_ships = [['0' for x in range(length_input)] for x in range(length_input)]
     return board_player1_ships
@@ -102,6 +145,12 @@ def init_board1(length_input):
 def init_board2(length_input):
     board_player2_ships = [['0' for x in range(length_input)] for x in range(length_input)]
     return board_player2_ships
+
+def valid_coordinate(a, b, length_input):
+    if -1 < a < length_input and -1 < b < length_input:
+        return True
+    else:
+        return False
 
 
 def print_ship_board(board, player, length_input):
@@ -203,7 +252,34 @@ def place_ship(board, player, length_input):
         else:
             print_ship_board(board, player, length_input) 
             print('Invalid input')
-        
+
+def place_ship_ai(board, player, length_input):
+    ship_count_size2 = (length_input // 2)
+    ship_count_size1 = (length_input // 2) - 1
+    bad_coords = []
+    while ship_count_size1 > 0:
+        row, col = get_ship_ai_move(board, player, length_input)
+        ship_size = 1 
+        okay_placement = check_next_to_ship(row, col, board, player, ship_size)
+        if okay_placement is True:
+            if board[row][col] == "0":
+                board[row][col] = "X"
+                ship_count_size1 -= 1
+        else:
+            print()
+    while ship_count_size2 > 0:
+        row, col = get_ship_ai_move(board, player, length_input)
+        ship_size = 2
+        ship_direction = 'v'
+        okay_placement = check_next_to_ship(row, col, board, player, ship_size, ship_direction)
+        if okay_placement is True:
+            board[row][col] = "X"
+            if valid_coordinate(row + 1, col, length_input):
+                board[row + 1][col] = "X"
+            ship_count_size2 -= 1
+        else:
+            print() 
+
 
 def check_next_to_ship(row, col, board, player, ship_size, ship_direction=None):
     try:
@@ -353,6 +429,36 @@ def get_ship_move(board, player, length_input):
                 print(wrong_input)
 
 
+def get_ship_ai_move(board, player, length_input):
+    row, col = 0, 0
+    possible_moves_row = [int(i) for i in range(length_input)]
+    possible_moves_col = [int(i) for i in range(length_input)]
+    while True:
+        row = random.choice(possible_moves_row)
+        col = random.choice(possible_moves_col)
+        if board[row][col] == "X":
+            print()
+        else:
+            return row, col
+
+
+def get_ai_move(board, player, length_input):
+    row, col = 0, 0
+    possible_moves_row = [i for i in range(length_input)]
+    possible_moves_col = [i for i in range(length_input)]
+    while True:
+        row = random.choice(possible_moves_row)
+        col = random.choice(possible_moves_col)
+        if board[row][col] == "M":
+            print()
+        elif board[row][col] == "S":
+            print()
+        elif board[row][col] == "H":
+            print()
+        else:
+            return row, col
+
+
 def get_move(board, player, length_input):
     """Returns the coordinates of a valid move for player on board."""
     row, col = 0, 0
@@ -402,13 +508,6 @@ def mark(board, row, col, player):
         print('You missed!')
         time.sleep(2)
 
-
-def valid_coordinate(a, b, length_input):
-    if -1 < a < length_input and -1 < b < length_input:
-        return True
-    else:
-        return False
-
         
 def check_sunken_ship(board, player, length_input):
     sunken = 1
@@ -450,8 +549,6 @@ def choose_game_board(player,board1, board2):
     return board
 
 
-
-
 def ship_placement_phase(player_index, length_input, board1, board2):
     while player_index < 3:
         player = choose_player(player_index)
@@ -460,11 +557,69 @@ def ship_placement_phase(player_index, length_input, board1, board2):
         place_ship(board, player, length_input)
         player_index += 1
         os.system("clear")
-        input("Ready? (Press any key) ")
+        waiting_screen()
         os.system("clear")
 
 
-def game_play(player_index, length_input, board1, board2):
+def ship_placement_phase_with_ai(player_index, length_input, board1, board2):
+    while player_index == 1:
+        player = choose_player(player_index)
+        board = choose_ship_board(player,board1, board2)
+        print_ship_board(board, player, length_input)
+        place_ship(board, player, length_input)
+        player_index += 1
+        os.system("clear")
+        waiting_screen()
+        os.system("clear")
+        place_ship_ai(board, player, length_input)
+
+
+def board_size():
+    while True:
+        board_size_given = input("Choose a board size (5 - 10):  ")
+        correct_board_sizes = ["5", "6", "7", "8", "9", "10"]
+        if board_size_given in correct_board_sizes:
+            return int(board_size_given)
+        else:
+            print("Invalid input! (must be between 5-10)")
+
+
+def game_play_with_ai():
+    player_index = 1
+    length_input = board_size()
+    board1 = init_board1(length_input)
+    board2 = init_board2(length_input)
+    ship_placement_phase_with_ai(player_index, length_input, board1, board2)
+    winner = False
+    while winner is False:
+        player = choose_player(player_index)
+        board = choose_game_board(player, board1, board2)
+        print_both_boards(board1, board2, length_input)
+        row, col = get_move(board, player, length_input)
+        mark(board, row, col, player)
+        check_sunken_ship(board, player, length_input)
+        print_both_boards(board1, board2, length_input)
+        time.sleep(1)
+        winner = is_win(player, board)
+        player_index += 1
+        row, col = get_ai_move(board, player, length_input)
+        mark(board, row, col, player)
+        check_sunken_ship(board, player, length_input)
+        print_both_boards(board1, board2, length_input)
+        time.sleep(1)
+        winner = is_win(player, board)
+        player_index += 1
+    win_screen(player)
+    time.sleep(3)
+    start_menu()
+
+
+def game_play():
+    player_index = 1
+    length_input = board_size()
+    board1 = init_board1(length_input)
+    board2 = init_board2(length_input)
+    ship_placement_phase(player_index, length_input, board1, board2)
     winner = False
     while winner is False:
         player = choose_player(player_index)
@@ -478,42 +633,30 @@ def game_play(player_index, length_input, board1, board2):
         winner = is_win(player, board)
         player_index += 1
     win_screen(player)
+    time.sleep(3)
+    start_menu()
 
 
 def start_menu():
     logo()
-    print("1. Play game")
-    print("2. Quit")
+    print("1. Two Player Game")
+    print("2. One player")
+    print("3. Quit")
     print()
     game_start_input = int(input("Pick game mode: "))
     if game_start_input == 1:
-        return True
+        game_play()
     elif game_start_input == 2:
+        game_play_with_ai()
+    elif game_start_input == 3:
         exit()
     else:
         print("Sorry, not sure what you meant by that")
 
 
-def board_size():
-    while True:
-        board_size_given = input("Choose a board size (5 - 10):  ")
-        correct_board_sizes = ["5", "6", "7", "8", "9", "10"]
-        if board_size_given in correct_board_sizes:
-            return int(board_size_given)
-        else:
-            print("Invalid input! (must be between 5-10)")
-
-
 def main_menu():
-    player_index = 1
-    # intro()
+    intro()
     start_menu()
-    length_input = board_size()
-    board1 = init_board1(length_input)
-    board2 = init_board2(length_input)
-    ship_placement_phase(player_index, length_input, board1, board2)
-    game_play(player_index, length_input, board1, board2)
-   
 
 
 if __name__ == '__main__':
