@@ -1,6 +1,7 @@
 import time
 import os
 import random
+from colorama import Fore, Back, Style, init
 
 
 def win_screen(player):
@@ -154,6 +155,7 @@ def valid_coordinate(a, b, length_input):
 
 
 def print_ship_board(board, player, length_input):
+    init(autoreset=True)
     os.system("clear")
     print()
     numbers = ("12345678910")
@@ -169,7 +171,7 @@ def print_ship_board(board, player, length_input):
         for index in range(length_input):
             if index < (length_input + 1):
                 if board[count][index] == '0':
-                    print("  0", end=" ")
+                    print(Style.DIM + "  0", end=" ")
                 if board[count][index] == 'X':
                     print("  {}".format('X'), end=" ")
                 if board[count][index] == 'H':
@@ -309,6 +311,7 @@ def check_next_to_ship(row, col, board, player, ship_size, ship_direction=None):
 
 
 def print_game_board_player1(board2, length_input, player="Player 1"):
+    init(autoreset=True)
     print('', end='')
     yield
     print(player, end='\t')
@@ -330,13 +333,13 @@ def print_game_board_player1(board2, length_input, player="Player 1"):
         for index in range(length_input):
             if index < (length_input + 1):
                 if board2[count][index] == '0' or board2[count][index] == 'X':
-                    print("  0", end=" ")
+                    print(Style.DIM + "  0", end=" ")
                 if board2[count][index] == 'M':
                     print("  {}".format('M'), end=" ")
                 if board2[count][index] == 'H':
-                    print("  {}".format('H'), end=" ")
+                    print(Fore.RED + "  {}".format('H'), end=" ")
                 if board2[count][index] == 'S':
-                    print("  {}".format('S'), end=" ")
+                    print(Fore.BLUE + "  {}".format('S'), end=" ")
         yield
         if letter != str("J"):
             print('',end='')
@@ -347,6 +350,7 @@ def print_game_board_player1(board2, length_input, player="Player 1"):
 
 
 def print_game_board_player2(board1, length_input, player="Player 2"):
+    init(autoreset=True)
     print('', end='')
     yield
     print(" ".rjust(length_input * 3) +player, end='')
@@ -368,13 +372,13 @@ def print_game_board_player2(board1, length_input, player="Player 2"):
         for index in range(length_input):
             if index < (length_input + 1):
                 if board1[count][index] == '0' or board1[count][index] == 'X':
-                    print("  0", end=" ")
+                    print(Style.DIM + "  0", end=" ")
                 if board1[count][index] == 'M':
                     print("  {}".format('M'), end=" ")
                 if board1[count][index] == 'H':
-                    print("  {}".format('H'), end=" ")
+                    print(Fore.RED + "  {}".format('H'), end=" ")
                 if board1[count][index] == 'S':
-                    print("  {}".format('S'), end=" ")
+                    print(Fore.BLUE + "  {}".format('S'), end=" ")
         yield
         if letter != str("J"):
             print('',end='')
@@ -407,7 +411,7 @@ def get_ship_move(board, player, length_input):
         wrong_input = "Input form was incorrect, please try again"
         location = list(move)
         if move == 'quit':
-            exit()
+            start_menu()
         else:
             try:
                 if (len(move)) != 2:
@@ -468,7 +472,7 @@ def get_move(board, player, length_input):
         wrong_input = "Input form was incorrect, please try again"
         location = list(move)
         if move == 'quit':
-            exit()
+            start_menu()
         else:
             try:
                 if (len(move)) != 2:
@@ -638,20 +642,22 @@ def game_play():
 
 
 def start_menu():
+    os.system("clear")
     logo()
     print("1. Two Player Game")
     print("2. One player")
     print("3. Quit")
     print()
-    game_start_input = int(input("Pick game mode: "))
-    if game_start_input == 1:
-        game_play()
-    elif game_start_input == 2:
-        game_play_with_ai()
-    elif game_start_input == 3:
-        exit()
-    else:
-        print("Sorry, not sure what you meant by that")
+    while True:
+        game_start_input = input("Pick game mode: ")
+        if game_start_input == '1':
+            game_play()
+        elif game_start_input == '2':
+            game_play_with_ai()
+        elif game_start_input == '3':
+            exit()
+        else:
+            print("Sorry, not sure what you meant by that")
 
 
 def main_menu():
